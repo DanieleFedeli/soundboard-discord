@@ -1,27 +1,47 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+import { SoundboardDocument } from "./soundboard.schema";
 
-interface ISound extends mongoose.Document {
-	_id: number;
-	serverId: number;
-	url: string;
-	name: string;
-	createAt: Date;
-	updateAt: Date;
+export interface ISound {
+  url: string;
+  name: string;
+  serverId: SoundboardDocument["_id"];
 }
 
-const soundSchema = new mongoose.Schema({
-	_id: Schema.Types.ObjectId,
-	serverId: Schema.Types.ObjectId,
-	url: { type: String, required: true },
-	name: { type: String, required: true, trim: true, minLenght: 1 },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+export interface SoundModelInterface extends mongoose.Model<SoundDocument> {
+  build: (attr: ISound) => SoundDocument;
+}
+
+export interface SoundDocument extends mongoose.Document {
+  url: string;
+  name: string;
+  serverId: SoundboardDocument["_id"];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const soundSchema = new mongoose.Schema<SoundDocument>({
+  serverId: mongoose.Schema.Types.ObjectId,
+  url: { type: String, required: true },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    minLenght: 1,
+    unique: true,
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
+
+soundSchema.statics.build = (attr: ISound) => new Sound(attr);
 
 soundSchema.pre("save", function (next) {
-	next();
+  next();
 });
 
-const Sound = mongoose.model<ISound>("Sound", soundSchema);
+const Sound = mongoose.model<SoundDocument, SoundModelInterface>(
+  "Sound",
+  soundSchema
+);
 
 export default Sound;

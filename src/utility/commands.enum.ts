@@ -1,3 +1,5 @@
 export enum Commands {
-	INSERT = "!insert",
+  INSERT = "insert",
+  REMOVE = "remove",
+  LIST = "list",
 }

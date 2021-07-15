@@ -1,6 +1,11 @@
 {
+  "name": "soundboard-discord",
+  "main": "src/index.ts",
+  "type": "commonjs",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "babel-watch -L --watch src src/index.ts --extensions .ts",
+    "build": "babel src -d build --extensions \".ts,.js\" --copy-files",
+    "lint": "eslint --ext .ts --fix ."
   },
   "dependencies": {
     "discord.js": "^12.5.3",
@@ -8,8 +13,25 @@
     "mongoose": "^5.13.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
     "@types/node": "^16.3.1",
-    "ts-node": "^10.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-watch": "^7.4.0",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-sonarjs": "^0.7.0",
+    
     "typescript": "^4.3.5"
   }
 }

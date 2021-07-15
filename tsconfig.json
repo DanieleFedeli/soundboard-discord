@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "allowJs": true,
+    "noEmit": true,
+    "types": [
+      "node",
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "@types"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "outDir": "build",
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "lib": [
+      "es6"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    },
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.ts",
+  ]
+}

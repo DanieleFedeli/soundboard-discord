@@ -1,23 +1,47 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+import { SoundDocument } from "./sound.schema";
 
-interface ISoundboard extends mongoose.Document {
-	_id: number;
-	serverName: string;
-	createAt: Date;
-	updateAt: Date;
+export interface ISoundboard {
+  name: string;
+}
+
+export interface SoundboardModelInterface
+  extends mongoose.Model<SoundboardDocument> {
+  build: (attr: ISoundboard) => SoundboardDocument;
+  findOrCreate: (
+    condition: mongoose.FilterQuery<unknown>,
+    document?: SoundDocument
+  ) => ReturnType<typeof Soundboard["findOne"]>;
+}
+
+export interface SoundboardDocument extends mongoose.Document {
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const soundboardSchema = new mongoose.Schema({
-	_id: Schema.Types.ObjectId,
-	serverName: { type: String, required: true },
-	createdAt: { type: Date, default: Date.now },
-	updatedAt: { type: Date, default: Date.now },
+  name: { type: String, required: true, index: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 soundboardSchema.pre("save", function (next) {
-	next();
+  next();
 });
 
-const Soundboard = mongoose.model<ISoundboard>("Soundboard", soundboardSchema);
+soundboardSchema.statics.build = (attr: ISoundboard) => new Soundboard(attr);
+soundboardSchema.statics.findOrCreate = async function (
+  condition: mongoose.FilterQuery<unknown>,
+  document?: SoundboardDocument
+) {
+  const one = await this.findOne(condition);
+  return one ?? this.create(document ?? condition);
+};
+
+const Soundboard = mongoose.model<SoundboardDocument, SoundboardModelInterface>(
+  "Soundboard",
+  soundboardSchema
+);
 
 export default Soundboard;

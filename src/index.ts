@@ -1,47 +1,48 @@
-import { Client, Message } from "discord.js";
-import { Commands } from "./utility/commands.enum";
+import { Client } from "discord.js";
 import dotenv from "dotenv";
+import { Commands } from "./utility/commands.enum";
 import accessEnv from "./utility/accessEnv";
 import initConnection from "./database/database";
 
+import { insertSound, listSounds, removeSound } from "./database/handler";
+import initModels, { Soundboard } from "./database/models";
+
+const prefix = "!";
+
 dotenv.config();
 
-const client = new Client({ fetchAllMembers: true });
-
+initConnection();
+const client = new Client();
+client.on("debug", console.debug);
 client.once("ready", function () {
-	console.log(`Logges ad ${client.user?.tag}`);
-	initConnection();
+  client.guilds.cache.forEach((guild) => {
+    const _soundboard = Soundboard.build({ name: guild.id });
+    _soundboard.save();
+  });
 });
 
-client.on("message", message => {
-	console.log(client);
-	if (message.content.startsWith(Commands.INSERT)) {
-		return insertSound(message);
-	}
+client.on("message", async (message) => {
+  if (!message.guild?.available) return;
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  const serverId = message.guild.id;
+
+  const args = message.content.slice(prefix.length).trim().split(/ +/);
+  const command = args.shift()?.toLowerCase();
+  if (args.length !== 1) return;
+
+  const _soundboard = await Soundboard.findOrCreate({ name: serverId });
+
+  switch (command) {
+    case Commands.INSERT:
+      return insertSound(message, _soundboard._id, args);
+    case Commands.REMOVE:
+      return removeSound(message, _soundboard._id, args);
+    case Commands.LIST:
+      return listSounds(message, _soundboard._id);
+    default:
+      return;
+  }
 });
-
-function insertSound(message: Message) {
-	const { attachments, content } = message;
-
-	console.info({ message });
-
-	const splitted = content.split(" ");
-	if (splitted.length !== 2)
-		return message.channel.send(
-			`Devi inviare il comando ${Commands.INSERT} seguito dal name del souno:\n${Commands.INSERT} boom`
-		);
-
-	if (attachments.array().length !== 1)
-		return message.channel.send(
-			"Devi inviare un allegato .mp3 per inserirlo nella soundboard."
-		);
-
-	try {
-		return;
-	} catch (e) {
-		return message.channel.send(e.message);
-	}
-}
 
 const DISCORD_TOKEN = accessEnv<string>("DISCORD_TOKEN");
-client.login(DISCORD_TOKEN).catch(console.error);
+initModels().then(() => client.login(DISCORD_TOKEN).catch(console.error));
