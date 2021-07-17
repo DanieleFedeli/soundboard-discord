@@ -27,12 +27,12 @@ const soundSchema = new mongoose.Schema<SoundDocument>({
     required: true,
     trim: true,
     minLenght: 1,
-    unique: true,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
+soundSchema.index({ serverId: 1, name: 1 }, { unique: true });
 soundSchema.statics.build = (attr: ISound) => new Sound(attr);
 
 soundSchema.pre("save", function (next) {
