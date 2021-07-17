@@ -12,13 +12,13 @@ export default function initConnection(): void {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    autoIndex: true,
     family: 4,
     logger: console.log,
     loggerLevel: "info",
   });
 
   const connection = mongoose.connection;
+
   connection.on("error", console.error.bind(console, "Connection error:"));
   connection.once("open", console.log);
 }

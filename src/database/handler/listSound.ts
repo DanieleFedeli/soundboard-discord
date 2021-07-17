@@ -6,11 +6,12 @@ const listSound: MessageOnlyFn = async function listSound(
   serverId
 ) {
   try {
-    const sounds = Sound.find({
+    const sounds = await Sound.find({
       serverId,
-    });
+    }).exec();
 
-    return channel.send((await sounds).join(", "));
+    const soundText = sounds.map((sound) => `${sound.name}: ${sound.url}\n`);
+    return channel.send(soundText);
   } catch (e) {
     console.error(e);
     return channel.send(e.message);

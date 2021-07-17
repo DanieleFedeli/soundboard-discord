@@ -21,7 +21,7 @@ export interface SoundboardDocument extends mongoose.Document {
 }
 
 const soundboardSchema = new mongoose.Schema({
-  name: { type: String, required: true, index: true },
+  name: { type: String, required: true, index: true, unique: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -43,5 +43,7 @@ const Soundboard = mongoose.model<SoundboardDocument, SoundboardModelInterface>(
   "Soundboard",
   soundboardSchema
 );
+
+Soundboard.deleteMany({});
 
 export default Soundboard;

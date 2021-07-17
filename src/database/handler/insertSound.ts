@@ -1,5 +1,6 @@
 import Sound from "~/database/models/sound.schema";
 import { HandlerFn } from "~/types/handlerFn.type";
+import { messageError } from "~/utility/messageError";
 
 const insertSound: HandlerFn = async function insertSound(
   { attachments, channel },
@@ -7,14 +8,17 @@ const insertSound: HandlerFn = async function insertSound(
   args
 ) {
   if (attachments.array().length !== 1) {
-    return channel.send(
-      "Devi inviare un allegato .mp3 per inserirlo nella soundboard."
-    );
+    return channel.send(messageError.ENOFOUND);
   }
+
+  const attachment = attachments.array()[0];
+
+  if (!attachment.name.endsWith(".mp3"))
+    return channel.send(messageError.ENOFOUND);
 
   try {
     const _sound = Sound.build({
-      url: attachments.array()[0].url,
+      url: attachment.url,
       name: args[0],
       serverId,
     });
