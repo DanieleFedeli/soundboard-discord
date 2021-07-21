@@ -22,8 +22,8 @@ module.exports = {
       env: {
         DISCORD_TOKEN: process.env.DISCORD_TOKEN,
         MONGODB_URI: process.env.MONGODB_URI,
-        MONGODB_USER: process.env.USER,
-        MONGODB_PASS: process.env.PASS
+        MONGODB_USER: process.env.MONGODB_USER,
+        MONGODB_PASS: process.env.MONGODB_PASS,
       }
     },
   }
