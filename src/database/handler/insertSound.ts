@@ -20,7 +20,7 @@ const insertSound: HandlerFn = async function insertSound(
     channel,
     serverId,
     name: args[0],
-    link: isFromAttachment ? args[1] : attachments.array()[0].url,
+    link: isFromExternalLink ? args[1] : attachments.array()[0].url,
   };
 
   return _insert(payload);
