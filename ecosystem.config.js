@@ -16,7 +16,7 @@ module.exports = {
       path: "/home/ec2-user",
       repo: "https://github.com/DanieleFedeli/soundboard-discord.git",
       "post-setup": "nvm use default && npm i && npm run build && rm -r node_modules && npm i --production",
-      "post-deploy": "pm2 startOrRestart"
+      "post-deploy": "pm2 startOrRestart ecosystem.config.js"
     },
   }
 };
