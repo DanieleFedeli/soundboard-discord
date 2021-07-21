@@ -17,8 +17,7 @@ module.exports = {
       ref: "origin/main",
       path: "/home/ec2-user",
       repo: "https://github.com/DanieleFedeli/soundboard-discord.git",
-      "post-setup": "nvm use default && npm i && npm run build",
-      "post-deploy": "pm2 startOrRestart ecosystem.config.js",
+      "post-deploy": "nvm use default && npm i && npm run build && pm2 startOrRestart ecosystem.config.js",
       env: {
         DISCORD_TOKEN: process.env.DISCORD_TOKEN,
         MONGODB_URI: process.env.MONGODB_URI,

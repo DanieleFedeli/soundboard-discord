@@ -29,25 +29,34 @@ client.once("ready", function () {
 client.on("message", async (message) => {
   if (!message.guild?.available) return;
   if (!message.content.startsWith(prefix) || message.author.bot) return;
+
   const serverId = message.guild.id;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift()?.toLowerCase();
+  console.log(`[MESSAGE] Command: ${command}, args: ${args}`);
 
   const _soundboard = await Soundboard.findOrCreate({ name: serverId });
 
   switch (command) {
-    case Commands.INSERT:
+    case Commands.INSERT: {
+      console.log(`[INSERT HANDLER]`);
       if (args.length !== 1) return;
       return insertSound(message, _soundboard._id, args);
-    case Commands.REMOVE:
+    }
+    case Commands.REMOVE: {
+      console.log(`[REMOVE HANDLER]`);
       if (args.length !== 1) return;
       return removeSound(message, _soundboard._id, args);
+    }
     case Commands.LIST:
+      console.log(`[LIST HANDLER]`);
       return listSounds(message, _soundboard._id);
     case Commands.HELP:
+      console.log(`[HELP HANDLER]`);
       return helpCommand(message);
     default:
+      console.log(`[PLAY HANDLER]`, command);
       return playSound(message, _soundboard._id, [command]);
   }
 });
