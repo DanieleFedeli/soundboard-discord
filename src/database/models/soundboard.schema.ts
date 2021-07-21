@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { SoundDocument } from "./sound.schema";
 
 export interface ISoundboard {
@@ -15,6 +15,7 @@ export interface SoundboardModelInterface
 }
 
 export interface SoundboardDocument extends mongoose.Document {
+  _id: Schema.Types.ObjectId;
   name: string;
   createdAt: Date;
   updatedAt: Date;

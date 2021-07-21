@@ -5,6 +5,7 @@ import accessEnv from "./utility/accessEnv";
 import initConnection from "./database/database";
 
 import {
+  helpCommand,
   insertSound,
   listSounds,
   playSound,
@@ -44,11 +45,10 @@ client.on("message", async (message) => {
       return removeSound(message, _soundboard._id, args);
     case Commands.LIST:
       return listSounds(message, _soundboard._id);
-    case Commands.PLAY:
-      if (args.length !== 1) return;
-      return playSound(message, _soundboard._id, args);
+    case Commands.HELP:
+      return helpCommand(message);
     default:
-      return;
+      return playSound(message, _soundboard._id, [command]);
   }
 });
 

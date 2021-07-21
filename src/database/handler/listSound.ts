@@ -1,7 +1,7 @@
 import Sound from "~/database/models/sound.schema";
-import { MessageOnlyFn } from "~/types/handlerFn.type";
+import { MessageServerOnlyFn } from "~/types/handlerFn.type";
 
-const listSound: MessageOnlyFn = async function listSound(
+const listSound: MessageServerOnlyFn = async function listSound(
   { channel },
   serverId
 ) {

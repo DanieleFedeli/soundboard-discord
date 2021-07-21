@@ -16,7 +16,6 @@ const playSound: HandlerFn = async function playSound(
     if (!sound) return channel.send(messageError.ENOSOUND);
     connection.play(sound.url);
   } catch (e) {
-    console.error({ e });
     return channel.send(e.message);
   }
 };
