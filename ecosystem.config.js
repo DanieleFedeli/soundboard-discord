@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 module.exports = {
   apps: [
     {
@@ -16,7 +20,13 @@ module.exports = {
       path: "/home/ec2-user",
       repo: "https://github.com/DanieleFedeli/soundboard-discord.git",
       "post-setup": "nvm use default && npm i && npm run build",
-      "post-deploy": "pm2 startOrRestart ecosystem.config.js"
+      "post-deploy": "pm2 startOrRestart ecosystem.config.js",
+      env: {
+        DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+        MONGODB_URI: process.env.MONGODB_URI,
+        MONGODB_USER: process.env.USER,
+        MONGODB_PASS: process.env.PASS
+      }
     },
   }
 };
