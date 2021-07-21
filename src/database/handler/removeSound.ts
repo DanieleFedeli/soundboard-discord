@@ -10,6 +10,8 @@ const removeSound: HandlerFn = async function removeSound(
     Sound.deleteOne({
       serverId,
       name: args[0],
+    }).then((value) => {
+      console.info("Remove result ->", value);
     });
   } catch (e) {
     return channel.send(e.message);
