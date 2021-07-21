@@ -1,13 +1,6 @@
-import assert from "assert";
-import {
-  DMChannel,
-  Message,
-  MessageAttachment,
-  NewsChannel,
-  TextChannel,
-} from "discord.js";
-import { Schema } from "mongoose";
 import Sound from "~/database/models/sound.schema";
+import { DMChannel, Message, NewsChannel, TextChannel } from "discord.js";
+import { Schema } from "mongoose";
 import { HandlerFn } from "~/types/handlerFn.type";
 import { messageError } from "~/utility/messageError";
 
@@ -33,6 +26,7 @@ const insertSound: HandlerFn = async function insertSound(
   return _insert(payload);
 };
 
+export default insertSound;
 interface InsertPayload {
   channel: TextChannel | DMChannel | NewsChannel;
   serverId: Schema.Types.ObjectId;

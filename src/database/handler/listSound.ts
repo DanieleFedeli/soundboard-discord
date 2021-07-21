@@ -10,7 +10,7 @@ const listSound: MessageServerOnlyFn = async function listSound(
       serverId,
     }).exec();
 
-    const soundText = sounds.map((sound) => `${sound.name}: ${sound.url}\n`);
+    const soundText = sounds.map((sound) => `${sound.name}\t`);
     return channel.send(soundText);
   } catch (e) {
     console.error(e);

@@ -19,7 +19,7 @@ dotenv.config();
 
 initConnection();
 const client = new Client();
-// client.on("debug", console.debug);
+
 client.once("ready", function () {
   client.guilds.cache.forEach((guild) => {
     Soundboard.findOrCreate({ name: guild.id });
